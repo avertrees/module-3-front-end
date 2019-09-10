@@ -7,17 +7,21 @@ var map = new mapboxgl.Map({
     center: [-77.38, 39], // starting position
     zoom: 3 // starting zoom
 });
+
 // function closeForm() {
 //     document.getElementById("myForm").style.display = "none";
 // }
 
 function handleEvents(){
     map.on('click', function (e) {
-        //console.log(e)
+        //debugger
+        ///console.log(e)
         if (e.originalEvent.toElement.id.includes("marker")) {
             console.log(e)
             //&& e.originalEvent.target.innerText  === "edit"
-        } else {
+        } else if (e.originalEvent.target.classList.contains("edit")) { 
+            console.log(e)
+        }else {
             let lng = e.lngLat.lng
             let lat = e.lngLat.lat
             console.log(`long ${lng}, lat ${lat}`)
@@ -73,11 +77,18 @@ function slapPinOnDom(pinObj) {
     const dButton = document.createElement("button")
     dButton.innerText = "delete"
     dButton.dataset.id = pinObj.id
-
+    dButton.classList.add("delete")
+    dButton.addEventListener("click", function (e) {
+        console.log("delete", e)
+    })
     const eButton = document.createElement("button")
     eButton.innerText = "edit"
     eButton.dataset.id = pinObj.id
-
+    eButton.classList.add("edit")
+    eButton.addEventListener("click", function(e){
+        console.log("edit", e)
+    })
+    
     div.appendChild(p)
     div.appendChild(eButton)
     div.appendChild(dButton)
@@ -87,6 +98,7 @@ function slapPinOnDom(pinObj) {
         .setText(pinObj.description)
         .setDOMContent(div);
 
+    
     // create DOM element for the marker
     var el = document.createElement('div');
     el.classList += ' marker';
