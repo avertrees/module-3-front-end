@@ -18,5 +18,11 @@ body {
 
 
 .mapboxgl-popup {
-    max-width: 200px;
+    max-width: 100px !important;
+    font-size: 8px;
+}
+
+
+button {
+    font-size: 9px;
 }
