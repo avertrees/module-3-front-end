@@ -91,7 +91,7 @@ function slapPinOnDom(pinObj) {
     var el = document.createElement('div');
     el.classList += ' marker';
     el.id = `marker-${pinObj.id}`;
-    el.style.backgroundImage = `url('${pinObj.img_url}')`;
+    el.style.backgroundImage = `url('${pinObj.image_url}')`;
     el.style.backgroundSize = "cover";
     el.style.width= "50px";
     el.style.height = "50px";
@@ -99,7 +99,7 @@ function slapPinOnDom(pinObj) {
     el.style.cursor = "pointer";
     // create the marker
     new mapboxgl.Marker(el)
-        .setLngLat(pinObj.coordinates)
+        .setLngLat([pinObj.longitude, pinObj.latitude])
         .setPopup(popup) // sets a popup on this marker
         .addTo(map);
 }
