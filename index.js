@@ -13,8 +13,10 @@ var map = new mapboxgl.Map({
 
 function handleEvents(){
     map.on('click', function (e) {
+        //console.log(e)
         if (e.originalEvent.toElement.id.includes("marker")) {
             console.log(e)
+            //&& e.originalEvent.target.innerText  === "edit"
         } else {
             let lng = e.lngLat.lng
             let lat = e.lngLat.lat
@@ -32,6 +34,31 @@ function getPins(){
         .then(data => data.forEach(function (data) { slapPinOnDom(data) } ) )
 }
 
+function editForm(pinObj){
+    const form = document.createElement("form")
+    form.dataset.id = pinObj.id
+    form.class = "edit"
+    form.style.display = "none"
+
+    const description = document.createElement("INPUT");
+    description.setAttribute("type", "text");
+
+    const imgUrl = document.createElement("INPUT");
+    imgUrl.setAttribute("type", "text");
+
+    const coord = document.createElement("INPUT");
+    coord.setAttribute("type", "hidden");
+    coord.setAttribute("value", pinObj.coordinates);
+
+    var submit = document.createElement("INPUT");
+    submit.setAttribute("type", "submit");
+
+    form.appendChild(description)
+    form.appendChild(imgUrl)
+    form.appendChild(coord)
+    form.appendChild(submit)
+    return form
+}
 
 function slapPinOnDom(pinObj) {
     console.log(pinObj)
@@ -54,6 +81,8 @@ function slapPinOnDom(pinObj) {
     div.appendChild(p)
     div.appendChild(eButton)
     div.appendChild(dButton)
+    div.append(editForm(pinObj))
+
     var popup = new mapboxgl.Popup({ offset: 25 })
         .setText(pinObj.description)
         .setDOMContent(div);
