@@ -31,13 +31,6 @@ function handleEvents(){
     });
 }
 
-
-function getPins(){
-    fetch("http://localhost:3000/pins")
-    .then(res=>res.json())
-        .then(data => data.forEach(function (data) { slapPinOnDom(data) } ) )
-}
-
 function editForm(pinObj){
     const formDiv = document.createElement("div")
     formDiv.classList.add("editForm")
@@ -54,7 +47,8 @@ function editForm(pinObj){
 
     const imgUrl = document.createElement("INPUT");
     imgUrl.setAttribute("type", "text");
-    description.setAttribute("type", pinObj.image_url);
+    imgUrl.setAttribute("type", pinObj.image_url);
+
     const longitude = document.createElement("INPUT");
     longitude.setAttribute("type", "hidden");
     longitude.setAttribute("value", pinObj.longitude);
@@ -65,7 +59,9 @@ function editForm(pinObj){
 
     var submit = document.createElement("INPUT");
     submit.setAttribute("type", "submit");
-
+    
+    //submit.addEventListener("")
+    
     form.appendChild(name)
     form.appendChild(description)
     form.appendChild(imgUrl)
@@ -109,8 +105,6 @@ function formController(e){
     }
 }
 
-    
-
 function slapPinOnDom(pinObj) {
     console.log(pinObj)
     
@@ -129,9 +123,7 @@ function slapPinOnDom(pinObj) {
     dButton.innerText = "delete"
     dButton.dataset.id = pinObj.id
     dButton.classList.add("delete")
-    dButton.addEventListener("click", function (e) {
-        console.log("delete", e)
-    })
+    dButton.addEventListener("click", deletePin)
 
     const eButton = document.createElement("button")
     eButton.innerText = "edit"
@@ -169,6 +161,17 @@ function slapPinOnDom(pinObj) {
         .addTo(map);
 }
 
+function removePinFromDom(id){
+    const marker = document.querySelector(`#marker-${id}`)
+    marker.style.display = "none"
+}
+
+function getPins() {
+    fetch("http://localhost:3000/pins")
+        .then(res => res.json())
+        .then(data => data.forEach(function (data) { slapPinOnDom(data) }))
+}
+
 function createPin(longitude, latitude) {
     fetch("http://localhost:3000/pins",{
         "method": "POST",
@@ -180,13 +183,23 @@ function createPin(longitude, latitude) {
             "longitude": longitude,
             "latitude": latitude,
             "description": "...description...",
-            "img_url": "https://docs.mapbox.com/mapbox-gl-js/assets/washington-monument.jpg"
+            "image_url": "https://docs.mapbox.com/mapbox-gl-js/assets/washington-monument.jpg"
         })
     })
     .then(res=>res.json())
     .then(data => slapPinOnDom(data))
 }
 
+
+function deletePin(e) {
+    const id = e.target.dataset.id
+    //console.log(id)
+    fetch(`http://localhost:3000/pins/${id}`,{
+        "method": "DELETE",
+    })
+    .then(res=>res.json())
+    .then(removePinFromDom(id))
+}    
 
 document.addEventListener("DOMContentLoaded", function(e){
     getPins()
