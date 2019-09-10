@@ -29,3 +29,11 @@ body {
 button {
     font-size: 9px;
 }
+
+.editForm{
+    display: none;
+}
+
+.info{
+    display: block;
+}

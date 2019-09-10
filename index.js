@@ -25,7 +25,7 @@ function handleEvents(){
             let lng = e.lngLat.lng
             let lat = e.lngLat.lat
             console.log(`long ${lng}, lat ${lat}`)
-            createPin([lng, lat])
+            createPin(lng, lat)
             //createPin(lng, lat, id)
         }
     });
@@ -39,37 +39,88 @@ function getPins(){
 }
 
 function editForm(pinObj){
+    const formDiv = document.createElement("div")
+    formDiv.classList.add("editForm")
     const form = document.createElement("form")
     form.dataset.id = pinObj.id
-    form.class = "edit"
-    form.style.display = "none"
+
+    const name = document.createElement("INPUT");
+    name.setAttribute("type", "text");
+    name.setAttribute("value", pinObj.name);
 
     const description = document.createElement("INPUT");
     description.setAttribute("type", "text");
+    description.setAttribute("value", pinObj.description);
 
     const imgUrl = document.createElement("INPUT");
     imgUrl.setAttribute("type", "text");
+    description.setAttribute("type", pinObj.image_url);
+    const longitude = document.createElement("INPUT");
+    longitude.setAttribute("type", "hidden");
+    longitude.setAttribute("value", pinObj.longitude);
 
-    const coord = document.createElement("INPUT");
-    coord.setAttribute("type", "hidden");
-    coord.setAttribute("value", pinObj.coordinates);
+    const latitude = document.createElement("INPUT");
+    latitude.setAttribute("type", "hidden");
+    latitude.setAttribute("value", pinObj.latitude);
 
     var submit = document.createElement("INPUT");
     submit.setAttribute("type", "submit");
 
+    form.appendChild(name)
     form.appendChild(description)
     form.appendChild(imgUrl)
-    form.appendChild(coord)
+    form.appendChild(longitude)
+    form.appendChild(latitude)
     form.appendChild(submit)
-    return form
+    formDiv.append(form)
+    //formDiv.style.display = "none"
+    return formDiv
 }
+
+function showInfo(e) {
+    let info = document.querySelector(".info")
+    info.style.display = "block"
+}
+
+function hideInfo(e){
+    let info = document.querySelector(".info")
+    info.style.display = "none"
+}
+
+function hideForm(e){
+    showInfo(e)
+    let form = document.querySelector(".editForm")
+    form.style.display = "none"
+}
+function showForm(e){
+    console.log(e)
+    hideInfo(e)
+    let form = document.querySelector(".editForm")
+    form.style.display = "block"
+}
+
+function formController(e){
+    let isEdit = e.target.dataset.edit
+    isEdit === "true" ? isEdit = "false" : isEdit= "true"
+    if (isEdit) {
+        showForm(e)
+    } else {
+        hideForm(e)
+    }
+}
+
+    
 
 function slapPinOnDom(pinObj) {
     console.log(pinObj)
+    
+    const popupDiv = document.createElement("div")
+    popupDiv.dataset.id = pinObj.id
+    popupDiv.classList.add("popupDiv")
 
     const div = document.createElement("div")
     div.dataset.id = pinObj.id
-    div.class = "info"
+    div.classList.add("info")
 
     const p = document.createElement("p")
     p.innerText = pinObj.description
@@ -81,22 +132,23 @@ function slapPinOnDom(pinObj) {
     dButton.addEventListener("click", function (e) {
         console.log("delete", e)
     })
+
     const eButton = document.createElement("button")
     eButton.innerText = "edit"
     eButton.dataset.id = pinObj.id
+    eButton.dataset.edit = "false"
     eButton.classList.add("edit")
-    eButton.addEventListener("click", function(e){
-        console.log("edit", e)
-    })
-    
+    eButton.addEventListener("click", formController)
+
     div.appendChild(p)
     div.appendChild(eButton)
     div.appendChild(dButton)
-    div.append(editForm(pinObj))
-
+    popupDiv.append(div)
+    popupDiv.append(editForm(pinObj))
+    
     var popup = new mapboxgl.Popup({ offset: 25 })
         .setText(pinObj.description)
-        .setDOMContent(div);
+        .setDOMContent(popupDiv);
 
     
     // create DOM element for the marker
@@ -109,6 +161,7 @@ function slapPinOnDom(pinObj) {
     el.style.height = "50px";
     el.style.borderRadius = "50%";
     el.style.cursor = "pointer";
+
     // create the marker
     new mapboxgl.Marker(el)
         .setLngLat([pinObj.longitude, pinObj.latitude])
@@ -116,15 +169,17 @@ function slapPinOnDom(pinObj) {
         .addTo(map);
 }
 
-function createPin(pinCoord) {
+function createPin(longitude, latitude) {
     fetch("http://localhost:3000/pins",{
         "method": "POST",
         "headers":{
             "Content-Type": "application/json"
         },
         "body": JSON.stringify({
-            "coordinates": pinCoord,
-            "description": "lorem impsum",
+            "name": "...name...",
+            "longitude": longitude,
+            "latitude": latitude,
+            "description": "...description...",
             "img_url": "https://docs.mapbox.com/mapbox-gl-js/assets/washington-monument.jpg"
         })
     })
