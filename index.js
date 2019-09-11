@@ -31,6 +31,59 @@ function handleEvents(){
     });
 }
 
+function updatePopup(e, pinObj){
+    console.log(pinObj)
+    console.log(e)
+    //el.id = `marker-${pinObj.id}`;
+    
+    const img = document.querySelector(`#marker-${pinObj.id}`)
+    img.style.backgroundImage = `url('${pinObj.image_url}')`;
+    const h7 = document.querySelector("h7")
+    const p = document.querySelector("p")
+
+    h7.innerText = pinObj.name
+    p.innerText = pinObj.description
+
+    hideForm(e)
+    //showInfo(e)
+}
+function updatePin(e){
+    e.preventDefault()
+    console.log(e.target.imageUrl.value)
+    const id = e.target.dataset.id 
+    // const body = {
+    //     name: e.target.name.value,
+    //     description: e.target.description.value,
+    //     longitude: parseFloat(e.target.longitude.value),
+    //     latitude: parseFloat(e.target.latitude.value),
+    //     image_url: e.target.imageUrl.value
+    // }
+    console.log(id)
+    fetch(`http://localhost:3000/pins/${id}`,{
+        "method": "PATCH",
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "body": JSON.stringify({
+            name: e.target.name.value,
+            description: e.target.description.value,
+            longitude: parseFloat(e.target.longitude.value),
+            latitude: parseFloat(e.target.latitude.value),
+            image_url: e.target.imageUrl.value
+        })
+    })
+    .then(res=>res.json())
+    .then(pinObj => updatePopup(e, pinObj))
+
+    //.then(pinObj=>console.log(pinObj))
+    // form.dataset.id = pinObj.id
+    // longitude.id = "longitude"
+    // latitude.id = "latitude"
+    // imgUrl.id = "image-url"
+    // description.id = "description"
+    // name.id = "name"
+}
+
 function editForm(pinObj){
     const formDiv = document.createElement("div")
     formDiv.classList.add("editForm")
@@ -40,26 +93,33 @@ function editForm(pinObj){
     const name = document.createElement("INPUT");
     name.setAttribute("type", "text");
     name.setAttribute("value", pinObj.name);
+    name.id = "name"
 
     const description = document.createElement("INPUT");
     description.setAttribute("type", "text");
     description.setAttribute("value", pinObj.description);
-
+    description.id = "description"
+    
     const imgUrl = document.createElement("INPUT");
     imgUrl.setAttribute("type", "text");
-    imgUrl.setAttribute("type", pinObj.image_url);
-
+    imgUrl.setAttribute("value", pinObj.image_url);
+    imgUrl.id = "imageUrl"
+    
     const longitude = document.createElement("INPUT");
     longitude.setAttribute("type", "hidden");
     longitude.setAttribute("value", pinObj.longitude);
-
+    longitude.id = "longitude"
+    
     const latitude = document.createElement("INPUT");
     latitude.setAttribute("type", "hidden");
     latitude.setAttribute("value", pinObj.latitude);
+    latitude.id = "latitude"
 
     var submit = document.createElement("INPUT");
     submit.setAttribute("type", "submit");
     
+    //const form = document.getElementById("new-to-do")
+    form.addEventListener("submit", updatePin)
     //submit.addEventListener("")
     
     form.appendChild(name)
@@ -116,6 +176,9 @@ function slapPinOnDom(pinObj) {
     div.dataset.id = pinObj.id
     div.classList.add("info")
 
+    const h7 = document.createElement("h7")
+    h7.innerText = pinObj.name
+
     const p = document.createElement("p")
     p.innerText = pinObj.description
     
@@ -132,6 +195,7 @@ function slapPinOnDom(pinObj) {
     eButton.classList.add("edit")
     eButton.addEventListener("click", formController)
 
+    div.appendChild(h7)
     div.appendChild(p)
     div.appendChild(eButton)
     div.appendChild(dButton)
