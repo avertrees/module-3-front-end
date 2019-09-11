@@ -149,7 +149,7 @@ function hideForm(e){
     form.style.display = "none"
 }
 function showForm(e){
-    console.log(e)
+    // console.log(e)
     hideInfo(e)
     let form = document.querySelector(".editForm")
     form.style.display = "block"
@@ -165,8 +165,25 @@ function formController(e){
     }
 }
 
+function createLike(e){
+    // console.log(e)
+    // debugger
+    fetch("http://localhost:3000/likes",{
+        "method": "POST",
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "body": JSON.stringify({
+            "user_id": 1,
+            "pin_id": e.target.dataset.id
+        })
+    })
+    .then(res=>res.json())
+    .then(likeObj=>console.log(likeObj))    
+}
+
 function slapPinOnDom(pinObj) {
-    console.log(pinObj)
+    // console.log(pinObj)
     
     const popupDiv = document.createElement("div")
     popupDiv.dataset.id = pinObj.id
@@ -182,6 +199,19 @@ function slapPinOnDom(pinObj) {
     const p = document.createElement("p")
     p.innerText = pinObj.description
     
+    const likes = document.createElement("p")
+
+    const heart = document.createElement("button")
+    heart.innerHTML = `<i data-id=${pinObj.id} class='fa fa-heart' style='color:red'></i>`
+    heart.dataset.id  = pinObj.id
+    heart.addEventListener("click", createLike)
+
+    const span2 = document.createElement("span")
+    span2.id = "likes"
+    span2.innerText = pinObj.likes.length
+
+    likes.appendChild(heart)
+    likes.appendChild(span2)
     const dButton = document.createElement("button")
     dButton.innerText = "delete"
     dButton.dataset.id = pinObj.id
@@ -197,6 +227,9 @@ function slapPinOnDom(pinObj) {
 
     div.appendChild(h7)
     div.appendChild(p)
+
+    div.appendChild(likes)
+    //div.appendChild(span2)
     div.appendChild(eButton)
     div.appendChild(dButton)
     popupDiv.append(div)
@@ -257,7 +290,7 @@ function createPin(longitude, latitude) {
 
 function deletePin(e) {
     const id = e.target.dataset.id
-    //console.log(id)
+    
     fetch(`http://localhost:3000/pins/${id}`,{
         "method": "DELETE",
     })
