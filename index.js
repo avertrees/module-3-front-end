@@ -1,3 +1,8 @@
+//const numItemsToGenerate = 1; //how many gallery items you want on the screen
+const numImagesAvailable = 740; //how many total images are in the collection you are pulling from
+const imageWidth = 480; //your desired image width in pixels
+const imageHeight = 480; //desired image height in pixels
+const collectionID = 786921; //the collection ID from the original url
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiYXZlcnRyZWVzIiwiYSI6ImNrMGIzNjd0MDBxOGczanI3YXRnMndmb28ifQ.vMs6tdz00Q9KCQ_OSWtn8w';
 
@@ -25,7 +30,8 @@ function handleEvents(){
             let lng = e.lngLat.lng
             let lat = e.lngLat.lat
             console.log(`long ${lng}, lat ${lat}`)
-            createPin(lng, lat)
+            getMarkerImage(lng,lat,Math.floor(Math.random() * numImagesAvailable))
+            //createPin(lng, lat)
             //createPin(lng, lat, id)
         }
     });
@@ -263,13 +269,36 @@ function removePinFromDom(id){
     marker.style.display = "none"
 }
 
+
+function getMarkerImage(longitude, latitude, randomNumber){
+   return fetch(`https://source.unsplash.com/collection/${collectionID}/${imageWidth}x${imageHeight}/?sig=${randomNumber}`) 
+  .then((response)=> {    
+    //console.log(response)
+    //response.url
+    createPin(longitude, latitude, response.url)
+    // let galleryItem = document.createElement('div');
+    // galleryItem.classList.add('gallery-item');
+    // galleryItem.innerHTML = `
+    //   <img class="gallery-image" src="${response.url}" alt="gallery image"/>
+    // `
+    // document.body.appendChild(galleryItem);
+  })
+}
+
+//let randomImageIndex = Math.floor(Math.random() * numImagesAvailable);
+//renderGalleryItem(randomImageIndex);
+
+
 function getPins() {
     fetch("http://localhost:3000/pins")
         .then(res => res.json())
         .then(data => data.forEach(function (data) { slapPinOnDom(data) }))
 }
 
-function createPin(longitude, latitude) {
+//"https://docs.mapbox.com/mapbox-gl-js/assets/washington-monument.jpg"
+function createPin(longitude, latitude,url) {
+    //let url = renderGalleryItem(Math.floor(Math.random() * numImagesAvailable))
+    console.log(url)
     fetch("http://localhost:3000/pins",{
         "method": "POST",
         "headers":{
@@ -280,7 +309,7 @@ function createPin(longitude, latitude) {
             "longitude": longitude,
             "latitude": latitude,
             "description": "...description...",
-            "image_url": "https://docs.mapbox.com/mapbox-gl-js/assets/washington-monument.jpg"
+            "image_url": url
         })
     })
     .then(res=>res.json())
