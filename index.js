@@ -190,7 +190,9 @@ function createLike(e){
 
 function renderLikeOnDom(e, likeObj){
     let likeCount = document.querySelector("#likes")
-    likeCount.innerText = likeObj.id
+    let likes = parseInt(likeCount.innerText)
+    //console.log("likes", likes+=1)
+    likeCount.innerText = likes+=1
     //e.target.dataset.id
     console.log("likeObj", likeObj)
     console.log("event",e)
