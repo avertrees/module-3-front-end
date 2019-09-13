@@ -185,9 +185,17 @@ function createLike(e){
         })
     })
     .then(res=>res.json())
-    .then(likeObj=>console.log(likeObj))    
+    .then(likeObj=> renderLikeOnDom(e,likeObj))    
 }
 
+function renderLikeOnDom(e, likeObj){
+    let likeCount = document.querySelector("#likes")
+    likeCount.innerText = likeObj.id
+    //e.target.dataset.id
+    console.log("likeObj", likeObj)
+    console.log("event",e)
+    console.dir("likeCount", likeCount)
+}
 function slapPinOnDom(pinObj) {
     // console.log(pinObj)
     
