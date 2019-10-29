@@ -65,7 +65,7 @@ function updatePin(e){
     //     image_url: e.target.imageUrl.value
     // }
     console.log(id)
-    fetch(`http://localhost:3000/pins/${id}`,{
+    fetch(`https://mapbox-project-backend.herokuapp.com/pins/${id}`,{
         "method": "PATCH",
         "headers": {
             "Content-Type": "application/json"
@@ -174,7 +174,7 @@ function formController(e){
 function createLike(e){
     // console.log(e)
     // debugger
-    fetch("http://localhost:3000/likes",{
+    fetch("https://mapbox-project-backend.herokuapp.com/likes",{
         "method": "POST",
         "headers": {
             "Content-Type": "application/json"
@@ -300,7 +300,7 @@ function getMarkerImage(longitude, latitude, randomNumber){
 
 
 function getPins() {
-    fetch("http://localhost:3000/pins")
+    fetch("https://mapbox-project-backend.herokuapp.com/pins")
         .then(res => res.json())
         .then(data => data.forEach(function (data) { slapPinOnDom(data) }))
 }
@@ -309,7 +309,7 @@ function getPins() {
 function createPin(longitude, latitude,url) {
     //let url = renderGalleryItem(Math.floor(Math.random() * numImagesAvailable))
     console.log(url)
-    fetch("http://localhost:3000/pins",{
+    fetch("https://mapbox-project-backend.herokuapp.com/pins",{
         "method": "POST",
         "headers":{
             "Content-Type": "application/json"
@@ -330,7 +330,7 @@ function createPin(longitude, latitude,url) {
 function deletePin(e) {
     const id = e.target.dataset.id
     
-    fetch(`http://localhost:3000/pins/${id}`,{
+    fetch(`https://mapbox-project-backend.herokuapp.com/pins/${id}`,{
         "method": "DELETE",
     })
     .then(res=>res.json())
