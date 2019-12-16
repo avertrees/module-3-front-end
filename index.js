@@ -308,9 +308,7 @@ function getPins() {
         .then(data => data.forEach(function (data) { slapPinOnDom(data) }))
 }
 
-//"https://docs.mapbox.com/mapbox-gl-js/assets/washington-monument.jpg"
 function createPin(longitude, latitude,url) {
-    //let url = renderGalleryItem(Math.floor(Math.random() * numImagesAvailable))
     console.log(url)
     fetch("https://mapbox-project-backend.herokuapp.com/pins",{
         "method": "POST",
