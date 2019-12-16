@@ -1,4 +1,3 @@
-//const numItemsToGenerate = 1; //how many gallery items you want on the screen
 const numImagesAvailable = 740; //how many total images are in the collection you are pulling from
 const imageWidth = 480; //your desired image width in pixels
 const imageHeight = 480; //desired image height in pixels
@@ -12,10 +11,6 @@ var map = new mapboxgl.Map({
     center: [-77.38, 39], // starting position
     zoom: 3 // starting zoom
 });
-
-// function closeForm() {
-//     document.getElementById("myForm").style.display = "none";
-// }
 
 function handleEvents(){
     map.on('click', function (e) {
