@@ -282,25 +282,12 @@ function removePinFromDom(id){
     marker.style.display = "none"
 }
 
-
 function getMarkerImage(longitude, latitude, randomNumber){
    return fetch(`https://source.unsplash.com/collection/${collectionID}/${imageWidth}x${imageHeight}/?sig=${randomNumber}`) 
   .then((response)=> {    
-    //console.log(response)
-    //response.url
     createPin(longitude, latitude, response.url)
-    // let galleryItem = document.createElement('div');
-    // galleryItem.classList.add('gallery-item');
-    // galleryItem.innerHTML = `
-    //   <img class="gallery-image" src="${response.url}" alt="gallery image"/>
-    // `
-    // document.body.appendChild(galleryItem);
   })
 }
-
-//let randomImageIndex = Math.floor(Math.random() * numImagesAvailable);
-//renderGalleryItem(randomImageIndex);
-
 
 function getPins() {
     fetch("https://mapbox-project-backend.herokuapp.com/pins")
