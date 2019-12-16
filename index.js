@@ -31,8 +31,6 @@ function handleEvents(){
             let lat = e.lngLat.lat
             console.log(`long ${lng}, lat ${lat}`)
             getMarkerImage(lng,lat,Math.floor(Math.random() * numImagesAvailable))
-            //createPin(lng, lat)
-            //createPin(lng, lat, id)
         }
     });
 }
@@ -40,8 +38,7 @@ function handleEvents(){
 function updatePopup(e, pinObj){
     console.log(pinObj)
     console.log(e)
-    //el.id = `marker-${pinObj.id}`;
-    
+
     const img = document.querySelector(`#marker-${pinObj.id}`)
     img.style.backgroundImage = `url('${pinObj.image_url}')`;
     const h7 = document.querySelector("h7")
@@ -51,7 +48,6 @@ function updatePopup(e, pinObj){
     p.innerText = pinObj.description
 
     hideForm(e)
-    //showInfo(e)
 }
 
 function updatePin(e){
