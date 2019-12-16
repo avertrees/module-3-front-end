@@ -53,6 +53,7 @@ function updatePopup(e, pinObj){
     hideForm(e)
     //showInfo(e)
 }
+
 function updatePin(e){
     e.preventDefault()
     console.log(e.target.imageUrl.value)
@@ -154,6 +155,7 @@ function hideForm(e){
     let form = document.querySelector(".editForm")
     form.style.display = "none"
 }
+
 function showForm(e){
     // console.log(e)
     hideInfo(e)
@@ -198,6 +200,7 @@ function renderLikeOnDom(e, likeObj){
     console.log("event",e)
     console.dir("likeCount", likeCount)
 }
+
 function slapPinOnDom(pinObj) {
     // console.log(pinObj)
     
