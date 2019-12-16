@@ -58,13 +58,6 @@ function updatePin(e){
     e.preventDefault()
     console.log(e.target.imageUrl.value)
     const id = e.target.dataset.id 
-    // const body = {
-    //     name: e.target.name.value,
-    //     description: e.target.description.value,
-    //     longitude: parseFloat(e.target.longitude.value),
-    //     latitude: parseFloat(e.target.latitude.value),
-    //     image_url: e.target.imageUrl.value
-    // }
     console.log(id)
     fetch(`https://mapbox-project-backend.herokuapp.com/pins/${id}`,{
         "method": "PATCH",
