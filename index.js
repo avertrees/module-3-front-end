@@ -19,11 +19,8 @@ var map = new mapboxgl.Map({
 
 function handleEvents(){
     map.on('click', function (e) {
-        //debugger
-        ///console.log(e)
         if (e.originalEvent.toElement.id.includes("marker")) {
             console.log(e)
-            //&& e.originalEvent.target.innerText  === "edit"
         } else if (e.originalEvent.target.classList.contains("edit")) { 
             console.log(e)
         }else {
