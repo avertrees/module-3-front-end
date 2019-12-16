@@ -81,14 +81,6 @@ function updatePin(e){
     })
     .then(res=>res.json())
     .then(pinObj => updatePopup(e, pinObj))
-
-    //.then(pinObj=>console.log(pinObj))
-    // form.dataset.id = pinObj.id
-    // longitude.id = "longitude"
-    // latitude.id = "latitude"
-    // imgUrl.id = "image-url"
-    // description.id = "description"
-    // name.id = "name"
 }
 
 function editForm(pinObj){
@@ -157,7 +149,6 @@ function hideForm(e){
 }
 
 function showForm(e){
-    // console.log(e)
     hideInfo(e)
     let form = document.querySelector(".editForm")
     form.style.display = "block"
@@ -174,8 +165,6 @@ function formController(e){
 }
 
 function createLike(e){
-    // console.log(e)
-    // debugger
     fetch("https://mapbox-project-backend.herokuapp.com/likes",{
         "method": "POST",
         "headers": {
@@ -193,9 +182,7 @@ function createLike(e){
 function renderLikeOnDom(e, likeObj){
     let likeCount = document.querySelector("#likes")
     let likes = parseInt(likeCount.innerText)
-    //console.log("likes", likes+=1)
     likeCount.innerText = likes+=1
-    //e.target.dataset.id
     console.log("likeObj", likeObj)
     console.log("event",e)
     console.dir("likeCount", likeCount)
